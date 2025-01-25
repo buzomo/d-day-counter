@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 イベントカウントダウン</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .event {
+            background-color: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .event-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .event-name {
+            font-weight: bold;
+        }
+        .event-date {
+            color: #666;
+            font-size: 0.8em;
+        }
+        .countdown {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>2025年のイベント</h1>
+    <div id="events"></div>
+
+    <script>
+        const events = [
+            { name: "M面談", date: "2025-01-27" },
+            { name: "B面談", date: "2025-02-04" },
+            { name: "月例", date: "2025-02-05" },
+            { name: "同窓会", date: "2025-02-09" },
+            { name: "新刊、在宅", date: "2025-02-14" },
+            { name: "ビジキャリ試験", date: "2025-02-16" },
+            { name: "R面談とB会", date: "2025-02-20" },
+            { name: "ハイキング", date: "2025-03-15" },
+            { name: "休暇付与", date: "2025-04-01" },
+            { name: "31歳", date: "2025-12-08" }
+        ];
+
+        function calculateCountdown(eventDate) {
+            const now = new Date();
+            const target = new Date(eventDate);
+            const diff = target - now;
+            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            return days;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return `${date.getMonth() + 1}月${date.getDate()}日`;
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('events');
+            container.innerHTML = ''; // Clear previous content
+            events
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .forEach(event => {
+                    const countdown = calculateCountdown(event.date);
+                    const eventDiv = document.createElement('div');
+                    eventDiv.className = 'event';
+                    eventDiv.innerHTML = `
+                        <div class="event-details">
+                            <span class="event-name">${event.name}</span>
+                            <span class="event-date">${formatDate(event.date)}</span>
+                        </div>
+                        <span class="countdown">${countdown}日前</span>
+                    `;
+                    container.appendChild(eventDiv);
+                });
+        }
+
+        renderEvents();
+        setInterval(renderEvents, 24 * 60 * 60 * 1000);  // Update daily
+    </script>
+</body>
+</html>
